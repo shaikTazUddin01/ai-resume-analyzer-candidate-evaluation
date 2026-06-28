@@ -10,39 +10,12 @@ const analyticsRoutes = require("./analytics.routes");
 
 const router = express.Router();
 
-const moduleRoutes = [
-  {
-    path: "/auth",
-    route: authRoutes,
-  },
-  {
-    path: "/jobs",
-    route: jobRoutes,
-  },
-  {
-    path: "/resumes",
-    route: resumeRoutes,
-  },
-  {
-    path: "/analysis",
-    route: analysisRoutes,
-  },
-  {
-    path: "/ranking",
-    route: rankingRoutes,
-  },
-  {
-    path: "/shortlist",
-    route: shortlistRoutes,
-  },
-  {
-    path: "/analytics",
-    route: analyticsRoutes,
-  },
-];
-
-moduleRoutes.forEach((route) => {
-  router.use(route.path, route.route);
-});
+router.use("/auth", authRoutes);
+router.use("/jobs", jobRoutes);
+router.use("/resumes", resumeRoutes);
+router.use("/analysis", analysisRoutes);
+router.use("/ranking", rankingRoutes);
+router.use("/shortlist", shortlistRoutes);
+router.use("/analytics", analyticsRoutes);
 
 module.exports = router;
