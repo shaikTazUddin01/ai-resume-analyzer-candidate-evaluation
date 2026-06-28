@@ -1,34 +1,27 @@
 const express = require("express");
+const {
+  uploadResumeController,
+  getAllResumes,
+  getResumesByJob,
+  getSingleResume,
+  deleteResume,
+} = require("../controllers/resume.controller");
+
+const { protect } = require("../middlewares/auth.middleware");
+const { uploadResume } = require("../middlewares/upload.middleware");
+
 const router = express.Router();
 
-router.post("/upload", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Resume upload route working",
-  });
-});
+router.post(
+  "/upload",
+  protect,
+  uploadResume.single("resumeFile"),
+  uploadResumeController
+);
 
-router.get("/", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Get all resumes route working",
-  });
-});
-
-router.get("/job/:jobId", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Get resumes by job route working",
-    jobId: req.params.jobId,
-  });
-});
-
-router.delete("/:resumeId", (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "Delete resume route working",
-    resumeId: req.params.resumeId,
-  });
-});
+router.get("/", protect, getAllResumes);
+router.get("/job/:jobId", protect, getResumesByJob);
+router.get("/:resumeId", protect, getSingleResume);
+router.delete("/:resumeId", protect, deleteResume);
 
 module.exports = router;
