@@ -12,7 +12,7 @@ An AI-powered recruitment platform that helps HR/Admin users analyze resumes, ev
 - **Team Name:** CSE4204-8C-T04
 - **Project Type:** AI-based Web Application
 
----
+
 
 # Project Overview
 
