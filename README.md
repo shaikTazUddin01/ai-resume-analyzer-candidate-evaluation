@@ -28,8 +28,8 @@ The project uses a modern MERN architecture with AI integration through Gemini A
 
 | SL | Member Name | Student ID | Responsibility |
 |----|----------------------|------------|---------------------------------------------|
-| 01 | Shaik Taz Uddin | 11220320925 | Frontend Development & UI/UX |
-| 02 | MD Sakib Al Hasan | 11220320926 | Backend Development & API Integration |
+| 01 | Shaik Taz Uddin | 11220320925 |  Backend Development & API Integration |
+| 02 | MD Sakib Al Hasan | 11220320926 | Frontend Development & UI/UX |
 | 03 | Jarin Tasnim | 11220320930 | Database Management & Documentation |
 | 04 | Md. Junaidul Haque | 11220320932 | AI Integration, Testing & Deployment |
 
