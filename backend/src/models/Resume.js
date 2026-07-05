@@ -5,25 +5,13 @@ const resumeSchema = new mongoose.Schema(
     jobId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Job",
-      required: [true, "Job ID is required"],
-    },
-    candidateName: {
-      type: String,
-      required: [true, "Candidate name is required"],
-      trim: true,
-    },
-    candidateEmail: {
-      type: String,
-      required: [true, "Candidate email is required"],
-      trim: true,
-      lowercase: true,
-    },
-    phone: {
-      type: String,
-      trim: true,
-      default: "",
+      required: true,
     },
     fileName: {
+      type: String,
+      required: true,
+    },
+    originalName: {
       type: String,
       required: true,
     },
@@ -54,4 +42,4 @@ const resumeSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Resume", resumeSchema);
+module.exports = mongoose.models.Resume || mongoose.model("Resume", resumeSchema);

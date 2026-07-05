@@ -3,23 +3,21 @@ const Resume = require("../models/Resume");
 const Job = require("../models/Job");
 const extractResumeText = require("../utils/extractResumeText");
 
-// @desc Upload resume
-// @route POST /api/v1/resumes/upload
 const uploadResumeController = async (req, res) => {
   try {
-    const { jobId, candidateName, candidateEmail, phone } = req.body;
+    const { jobId } = req.body;
 
-    if (!jobId || !candidateName || !candidateEmail) {
+    if (!jobId) {
       return res.status(400).json({
         success: false,
-        message: "Job ID, candidate name and candidate email are required",
+        message: "Job ID is required",
       });
     }
 
-    if (!req.file) {
+    if (!req.files || req.files.length === 0) {
       return res.status(400).json({
         success: false,
-        message: "Resume file is required",
+        message: "Resume files are required",
       });
     }
 
@@ -32,45 +30,46 @@ const uploadResumeController = async (req, res) => {
       });
     }
 
-    const filePath = req.file.path;
-    const ext = path.extname(req.file.originalname).toLowerCase().replace(".", "");
+    const resumes = [];
 
-    let extractedText = "";
+    for (const file of req.files) {
+      const ext = path.extname(file.originalname).toLowerCase().replace(".", "");
 
-    try {
-      extractedText = await extractResumeText(filePath);
-    } catch (error) {
-      extractedText = "";
+      let extractedText = "";
+
+      try {
+        extractedText = await extractResumeText(file.path);
+      } catch {
+        extractedText = "";
+      }
+
+      const resume = await Resume.create({
+        jobId,
+        fileName: file.filename,
+        originalName: file.originalname,
+        filePath: file.path,
+        fileType: ext,
+        extractedText,
+        uploadedBy: req.user._id,
+      });
+
+      resumes.push(resume);
     }
-
-    const resume = await Resume.create({
-      jobId,
-      candidateName,
-      candidateEmail,
-      phone,
-      fileName: req.file.filename,
-      filePath,
-      fileType: ext,
-      extractedText,
-      uploadedBy: req.user._id,
-    });
 
     res.status(201).json({
       success: true,
-      message: "Resume uploaded successfully",
-      resume,
+      message: "Resumes uploaded successfully",
+      resumes,
     });
   } catch (error) {
     res.status(500).json({
       success: false,
-      message: "Failed to upload resume",
+      message: "Failed to upload resumes",
       error: error.message,
     });
   }
 };
 
-// @desc Get all resumes
-// @route GET /api/v1/resumes
 const getAllResumes = async (req, res) => {
   try {
     const resumes = await Resume.find()
@@ -92,8 +91,6 @@ const getAllResumes = async (req, res) => {
   }
 };
 
-// @desc Get resumes by job
-// @route GET /api/v1/resumes/job/:jobId
 const getResumesByJob = async (req, res) => {
   try {
     const { jobId } = req.params;
@@ -117,8 +114,6 @@ const getResumesByJob = async (req, res) => {
   }
 };
 
-// @desc Get single resume
-// @route GET /api/v1/resumes/:resumeId
 const getSingleResume = async (req, res) => {
   try {
     const { resumeId } = req.params;
@@ -147,8 +142,6 @@ const getSingleResume = async (req, res) => {
   }
 };
 
-// @desc Delete resume
-// @route DELETE /api/v1/resumes/:resumeId
 const deleteResume = async (req, res) => {
   try {
     const { resumeId } = req.params;

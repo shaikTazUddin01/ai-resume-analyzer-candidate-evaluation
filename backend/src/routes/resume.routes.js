@@ -15,7 +15,7 @@ const router = express.Router();
 router.post(
   "/upload",
   protect,
-  uploadResume.single("resumeFile"),
+  uploadResume.array("resumeFiles", 20),
   uploadResumeController
 );
 

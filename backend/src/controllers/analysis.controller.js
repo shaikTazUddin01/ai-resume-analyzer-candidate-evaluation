@@ -10,11 +10,11 @@ const generateFallbackAnalysis = (resumeText, job) => {
   const requiredSkills = job.requiredSkills || [];
 
   const matchedSkills = requiredSkills.filter((skill) =>
-    text.includes(skill.toLowerCase())
+    text.includes(skill.toLowerCase()),
   );
 
   const missingSkills = requiredSkills.filter(
-    (skill) => !text.includes(skill.toLowerCase())
+    (skill) => !text.includes(skill.toLowerCase()),
   );
 
   const matchPercentage =
@@ -30,9 +30,10 @@ const generateFallbackAnalysis = (resumeText, job) => {
 
   return {
     extractedSkills: matchedSkills,
-    education: text.includes("b.sc") || text.includes("bachelor")
-      ? "Bachelor degree detected"
-      : "Not detected",
+    education:
+      text.includes("b.sc") || text.includes("bachelor")
+        ? "Bachelor degree detected"
+        : "Not detected",
     experience: text.includes("experience")
       ? "Experience information detected"
       : "Not detected",
@@ -109,8 +110,9 @@ const analyzeResume = async (req, res) => {
     const analysis = await Analysis.create({
       resumeId,
       jobId,
-      candidateName: resume.candidateName,
-      candidateEmail: resume.candidateEmail,
+      candidateName:
+        resume.originalName || resume.fileName || "Candidate Resume",
+      candidateEmail: "not-extracted@example.com",
       extractedSkills: aiResult.extractedSkills || [],
       education: aiResult.education || "Not detected",
       experience: aiResult.experience || "Not detected",

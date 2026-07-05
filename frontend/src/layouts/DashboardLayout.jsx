@@ -1,4 +1,4 @@
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import {
   FiHome,
   FiUser,
@@ -7,8 +7,8 @@ import {
   FiBarChart2,
   FiAward,
   FiCheckSquare,
-  FiSettings,
 } from "react-icons/fi";
+import useAuth from "../hooks/useAuth";
 
 const menuItems = [
   { name: "Dashboard", path: "/dashboard", icon: FiHome },
@@ -18,10 +18,17 @@ const menuItems = [
   { name: "Analysis Result", path: "/analysis", icon: FiBarChart2 },
   { name: "Candidate Ranking", path: "/ranking", icon: FiAward },
   { name: "Shortlist", path: "/shortlist", icon: FiCheckSquare },
-  { name: "Admin Panel", path: "/admin", icon: FiSettings },
 ];
 
 const DashboardLayout = () => {
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-white">
       <aside className="hidden w-72 border-r border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 lg:block">
@@ -57,7 +64,10 @@ const DashboardLayout = () => {
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-6 py-4 dark:border-slate-800 dark:bg-slate-900">
           <h1 className="text-lg font-semibold">Recruitment Dashboard</h1>
 
-          <button className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600">
+          <button
+            onClick={handleLogout}
+            className="rounded-lg bg-red-500 px-4 py-2 text-sm font-medium text-white hover:bg-red-600"
+          >
             Logout
           </button>
         </header>
