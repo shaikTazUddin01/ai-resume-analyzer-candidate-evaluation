@@ -1,50 +1,54 @@
-const multer = require("multer");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
+const pdf = require("pdf-parse");
+const mammoth = require("mammoth");
 
-// const uploadDir = "uploads/resumes";
-const uploadDir = path.join('/tmp', 'resumes');
+const extractPdfText = async (filePath) => {
+  const dataBuffer = fs.readFileSync(filePath);
 
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+  const data = await pdf(dataBuffer);
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueName =
-      Date.now() +
-      "-" +
-      Math.round(Math.random() * 1e9) +
-      path.extname(file.originalname);
+  return data?.text?.trim() || "";
+};
 
-    cb(null, uniqueName);
-  },
-});
+const extractDocxText = async (filePath) => {
+  const result = await mammoth.extractRawText({
+    path: filePath,
+  });
 
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [
-    "application/pdf",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-  ];
+  return result?.value?.trim() || "";
+};
 
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only PDF and DOCX files are allowed"), false);
+const extractResumeText = async (filePath) => {
+  if (!filePath) {
+    throw new Error("Resume file path is required");
   }
+
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`Resume file not found: ${filePath}`);
+  }
+
+  const extension = path.extname(filePath).toLowerCase();
+
+  let extractedText = "";
+
+  if (extension === ".pdf") {
+    extractedText = await extractPdfText(filePath);
+  } else if (extension === ".docx") {
+    extractedText = await extractDocxText(filePath);
+  } else {
+    throw new Error(
+      "Unsupported resume format. Only PDF and DOCX are supported."
+    );
+  }
+
+  if (!extractedText || extractedText.trim().length === 0) {
+    throw new Error(
+      `No readable text could be extracted from ${path.basename(filePath)}`
+    );
+  }
+
+  return extractedText.trim();
 };
 
-const uploadResume = multer({
-  storage,
-  fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB
-  },
-});
-
-module.exports = {
-  uploadResume,
-};
+module.exports = extractResumeText;

@@ -1,18 +1,52 @@
 const express = require("express");
+
 const {
-  analyzeResume,
+  analyzeJobResumes,
   getAllAnalysis,
-  getSingleAnalysis,
   getAnalysisByJob,
+  getSingleAnalysis,
 } = require("../controllers/analysis.controller");
 
-const { protect } = require("../middlewares/auth.middleware");
+const {
+  protect,
+} = require("../middlewares/auth.middleware");
 
 const router = express.Router();
 
-router.post("/analyze", protect, analyzeResume);
-router.get("/", protect, getAllAnalysis);
-router.get("/job/:jobId", protect, getAnalysisByJob);
-router.get("/:analysisId", protect, getSingleAnalysis);
+/*
+|--------------------------------------------------------------------------
+| Bulk AI Analysis
+|--------------------------------------------------------------------------
+*/
+
+router.post(
+  "/analyze-job/:jobId",
+  protect,
+  analyzeJobResumes
+);
+
+/*
+|--------------------------------------------------------------------------
+| Get Analysis Results
+|--------------------------------------------------------------------------
+*/
+
+router.get(
+  "/",
+  protect,
+  getAllAnalysis
+);
+
+router.get(
+  "/job/:jobId",
+  protect,
+  getAnalysisByJob
+);
+
+router.get(
+  "/:analysisId",
+  protect,
+  getSingleAnalysis
+);
 
 module.exports = router;

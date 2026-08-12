@@ -1,25 +1,41 @@
 const axios = require("axios");
 
-const analyzeWithN8n = async ({ resumeText, jobCriteria, resumeId, jobId }) => {
-  try {
-    if (!process.env.N8N_WEBHOOK_URL) {
-      return null;
-    }
+const runResumeAnalysisWorkflow = async (payload) => {
+  const webhookUrl = process.env.N8N_WEBHOOK_URL;
 
-    const response = await axios.post(process.env.N8N_WEBHOOK_URL, {
-      resumeId,
-      jobId,
-      resumeText,
-      jobCriteria,
+  if (!webhookUrl) {
+    throw new Error("N8N_WEBHOOK_URL is not configured");
+  }
+
+  try {
+    const response = await axios.post(webhookUrl, payload, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      timeout: Number(process.env.N8N_TIMEOUT) || 120000,
     });
+
+    if (!response.data) {
+      throw new Error("n8n returned an empty response");
+    }
 
     return response.data;
   } catch (error) {
-    console.error("n8n workflow failed:", error.message);
-    return null;
+    if (error.code === "ECONNABORTED") {
+      throw new Error("AI analysis timed out");
+    }
+
+    if (error.response) {
+      throw new Error(
+        error.response.data?.message ||
+          `n8n workflow failed with status ${error.response.status}`
+      );
+    }
+
+    throw new Error(error.message || "Failed to connect with n8n workflow");
   }
 };
 
 module.exports = {
-  analyzeWithN8n,
+  runResumeAnalysisWorkflow,
 };
