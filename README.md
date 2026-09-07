@@ -138,7 +138,7 @@ Validation includes:
 
 The main intelligent feature of the project is the **Bulk AI Resume Analysis System**.
 
-The system analyzes multiple candidate resumes against a selected job criteria using **Google Gemini AI**.
+The system analyzes multiple candidate resumes against selected job criteria using **Google Gemini AI**.
 
 AI processing is managed through an **n8n workflow**, which connects the backend application with the Gemini API.
 
@@ -188,21 +188,21 @@ Receives job criteria and resume information from the backend through a POST req
 
 ### 2. Normalize Input & Build Prompts
 
-Processes the incoming data and creates a structured AI prompt for each candidate resume.
+Processes incoming data and creates a structured AI prompt for each candidate resume.
 
 ### 3. Gemini Resume Analysis
 
-Sends the generated prompt to the Google Gemini API and receives the AI-generated candidate evaluation.
+Sends the generated prompt to the Google Gemini API and receives AI-generated candidate evaluations.
 
 ### 4. Validate AI Output
 
-Validates and cleans the AI-generated response before it is used by the application.
+Validates, parses, and cleans the AI-generated response before it is used by the application.
 
 ### 5. Aggregate Candidate Results
 
-Combines all successfully analyzed candidate results into a single structured response.
+Combines all successfully analyzed candidate results into one structured response.
 
-The response also contains:
+The response contains:
 
 - Total Processed
 - Total Analyzed
@@ -218,7 +218,7 @@ Returns the final AI analysis response to the backend.
 
 # AI Analysis Output
 
-For each candidate, the AI system can generate structured information such as:
+For each candidate, the AI system generates structured information such as:
 
 ```json
 {
@@ -312,9 +312,7 @@ Return:
 
 # AI Response Handling
 
-The application is designed to handle different AI response scenarios.
-
-The workflow considers:
+The application handles different AI response scenarios including:
 
 - Successful AI Response
 - Invalid AI Response
@@ -326,7 +324,7 @@ The workflow considers:
 - Invalid JSON
 - Failed Candidate Analysis
 
-This prevents the entire application from failing if the AI service temporarily becomes unavailable or returns an unexpected response.
+This prevents the complete application from failing when the AI service returns an unexpected response or temporarily becomes unavailable.
 
 ---
 
@@ -404,16 +402,15 @@ This prevents the entire application from failing if the AI service temporarily 
 │ Ranking / Shortlist          │
 └──────────┬─────────┬─────────┘
            │         │
-           │         │
            ↓         ↓
      ┌──────────┐   ┌────────────────────┐
      │ MongoDB  │   │    n8n Workflow    │
      └──────────┘   └─────────┬──────────┘
                               │
                               ↓
-                    ┌────────────────────┐
-                    │ Google Gemini API  │
-                    └────────────────────┘
+                     ┌────────────────────┐
+                     │ Google Gemini API  │
+                     └────────────────────┘
 ```
 
 ---
@@ -441,17 +438,11 @@ backend/
 └── package.json
 
 database/
-
 documentation/
-
 design/
-
 diagrams/
-
 n8n-workflows/
-
 screenshots/
-
 README.md
 ```
 
@@ -541,7 +532,7 @@ N8N_WEBHOOK_URL=your_n8n_production_webhook_url
 
 > **Important:** Never upload real API keys, database credentials, JWT secrets, or other sensitive information to GitHub.
 
-The Gemini API credential should also be stored securely in the environment or n8n credential/configuration system and should never be committed to the repository.
+The Gemini API credential should also be stored securely in the environment or n8n credential/configuration system.
 
 ---
 
@@ -613,7 +604,7 @@ The AI analysis process works as follows:
 
 ### Step 1 — Create Job Criteria
 
-HR/Admin creates a job and defines information such as:
+HR/Admin creates a job and defines:
 
 - Job Title
 - Job Description
@@ -622,11 +613,11 @@ HR/Admin creates a job and defines information such as:
 
 ### Step 2 — Upload Resumes
 
-Multiple PDF/DOCX resumes can be uploaded under the selected job.
+Multiple PDF/DOCX resumes are uploaded under the selected job.
 
 ### Step 3 — Resume Text Extraction
 
-The backend automatically extracts readable text from uploaded resumes.
+The backend automatically extracts readable text from the uploaded resumes.
 
 ### Step 4 — Run AI Analysis
 
@@ -677,35 +668,7 @@ The frontend displays:
 
 ### Step 10 — Candidate Ranking
 
-Candidates can then be ranked based on the AI analysis results.
-
----
-
-# Example Bulk AI Response
-
-```json
-{
-  "success": true,
-  "totalProcessed": 2,
-  "totalAnalyzed": 2,
-  "totalFailed": 0,
-  "results": [
-    {
-      "candidateName": "Candidate One",
-      "matchPercentage": 100,
-      "aiScore": 90,
-      "recommendation": "Highly Recommended"
-    },
-    {
-      "candidateName": "Candidate Two",
-      "matchPercentage": 60,
-      "aiScore": 40,
-      "recommendation": "Not Recommended"
-    }
-  ],
-  "errors": []
-}
-```
+Candidates are ranked based on the AI analysis results.
 
 ---
 
@@ -720,95 +683,423 @@ Candidates can then be ranked based on the AI analysis results.
 - ✅ Week 07 — Frontend Development & Backend API Integration Completed
 - ✅ Week 08 — AI Integration & Intelligent Features Development Completed
 - ✅ Week 09 — Feature Completion, Integration & Mid-Project Review Completed
+- ✅ Week 10 — Software Testing, Debugging & Quality Assurance Completed
 
 ---
 
+# Week 10 — Software Testing, Debugging & Quality Assurance
 
-# Week 09 Integration & Mid-Project Review
+Week 10 focused on systematic testing, debugging, and quality assurance of the complete integrated application.
 
-Week 09 focused on bringing the major modules together into one complete and usable software system.
+After completing the major frontend, backend, database, authentication, and AI integration work, the actual working application was tested using valid, invalid, and unexpected input scenarios.
 
-The following integration work was completed and verified:
+The main objectives were to identify defects, verify application behavior, evaluate AI-generated results, resolve integration issues, and improve the overall stability and reliability of the system.
 
-- ✅ Frontend–Backend Integration
-- ✅ Real Database Data Integration
-- ✅ Authentication Workflow Verification
-- ✅ Protected Route Verification
-- ✅ Job Criteria CRUD Integration
-- ✅ Multiple Resume Upload Integration
-- ✅ Resume Text Extraction
-- ✅ Backend → n8n Communication
-- ✅ n8n → Google Gemini AI Integration
-- ✅ Bulk Resume Analysis
-- ✅ AI Output Validation
-- ✅ AI Result Aggregation
-- ✅ Frontend AI Result Display
-- ✅ Candidate Ranking Integration
-- ✅ Shortlist Integration
-- ✅ Dashboard Integration
-- ✅ Loading, Success, Error and Empty States
-- ✅ Responsive Interface Review
-- ✅ Major End-to-End Recruitment Workflow
+The following testing activities were performed:
 
-## Major End-to-End Workflow
+- ✅ Functional Testing
+- ✅ Authentication & Authorization Testing
+- ✅ REST API Testing
+- ✅ Database Testing
+- ✅ AI Feature Testing
+- ✅ AI Quality Evaluation
+- ✅ UI/UX Testing
+- ✅ Responsive Testing
+- ✅ Basic Security Testing
+- ✅ Error Handling Testing
+- ✅ Bug Identification & Resolution
+- ✅ Retesting
+- ✅ Regression Testing
+
+---
+
+## Testing Approach
+
+Testing was performed on the actual integrated application rather than isolated or dummy modules.
+
+Three major types of scenarios were considered:
+
+1. **Valid Scenarios** — Correct inputs and expected application behavior.
+2. **Invalid Scenarios** — Missing, incorrect, or invalid inputs.
+3. **Unexpected Scenarios** — AI errors, network issues, invalid responses, and unusual resume inputs.
+
+The complete recruitment workflow was tested from user authentication to AI-powered candidate evaluation, ranking, and shortlisting.
+
+---
+
+## Tested Modules
+
+| Module | Status |
+|---|---|
+| User Registration | ✅ Tested |
+| User Login | ✅ Tested |
+| User Logout | ✅ Tested |
+| User Profile | ✅ Tested |
+| Protected Routes | ✅ Tested |
+| Dashboard | ✅ Tested |
+| Job Criteria Management | ✅ Tested |
+| Resume Upload | ✅ Tested |
+| Resume Text Extraction | ✅ Tested |
+| Database Operations | ✅ Tested |
+| AI Resume Analysis | ✅ Tested |
+| n8n Workflow | ✅ Tested |
+| Gemini AI Integration | ✅ Tested |
+| AI Output Validation | ✅ Tested |
+| Analysis Result Display | ✅ Tested |
+| Candidate Ranking | ✅ Tested |
+| Shortlist Management | ✅ Tested |
+| Responsive Interface | ✅ Tested |
+
+---
+
+## Functional Testing
+
+The major features defined in the project requirements were tested using both successful and unsuccessful scenarios.
+
+Testing included:
+
+- Registration
+- Login
+- Logout
+- Profile Access
+- Protected Routes
+- Dashboard
+- Create Job Criteria
+- View Job Criteria
+- Update Job Criteria
+- Delete Job Criteria
+- Multiple Resume Upload
+- Resume Text Extraction
+- AI Resume Analysis
+- AI Result Display
+- Candidate Ranking
+- Candidate Shortlisting
+
+The major functional workflows produced the expected results during testing.
+
+---
+
+## Authentication & Authorization Testing
+
+The authentication workflow was verified using different scenarios.
+
+Testing included:
+
+- Valid Registration
+- Valid Login
+- Invalid Email / Password
+- Empty Login Fields
+- Logout
+- JWT Authentication
+- Protected Route Access
+- Unauthorized Access Prevention
+- Authentication State Management
+
+The system uses **JWT** for authentication and **bcryptjs** for secure password hashing.
+
+---
+
+## API Testing
+
+Backend REST APIs were tested using **Postman** and through the integrated frontend.
+
+Testing included:
+
+- GET Requests
+- POST Requests
+- PUT Requests
+- DELETE Requests
+- Authentication Headers
+- Valid Requests
+- Invalid Requests
+- Missing Parameters
+- Invalid Parameters
+- HTTP Status Codes
+- API Response Data
+- Error Responses
+
+Major API modules tested:
 
 ```text
-Registration / Login
-        ↓
-Dashboard
-        ↓
-Create Job Criteria
-        ↓
-Upload Multiple Resumes
-        ↓
-Backend Resume Text Extraction
-        ↓
-Select Job
-        ↓
-Analyze All Resumes
-        ↓
-Backend Processing
-        ↓
-n8n Workflow
-        ↓
-Google Gemini AI
-        ↓
-Validate & Aggregate Results
-        ↓
-Backend / Database Processing
-        ↓
-Frontend Result Display
-        ↓
-Candidate Ranking
-        ↓
-Shortlist
-        ↓
-Logout
+Authentication APIs
+Job Management APIs
+Resume Management APIs
+AI Analysis APIs
+Ranking APIs
+Shortlist APIs
+Analytics APIs
 ```
 
-## Week 09 Feature Completion Checklist
+---
 
-| Feature | Status | Remarks |
+## Database Testing
+
+MongoDB database operations were tested through the actual application.
+
+Testing verified:
+
+- Data Creation
+- Data Retrieval
+- Data Update
+- Data Deletion
+- User Data Storage
+- Job Criteria Storage
+- Resume Information Storage
+- Extracted Resume Text
+- AI Analysis Result Storage
+- Candidate Ranking Data
+- Shortlist Data
+
+MongoDB and Mongoose are used to maintain structured application data.
+
+---
+
+## AI Feature Testing
+
+The **Google Gemini AI + n8n Resume Analysis Workflow** was tested using different types of candidate resumes.
+
+The AI feature was evaluated based on:
+
+- Relevance
+- Accuracy
+- Consistency
+- Response Quality
+- Response Time
+- Skills Extraction
+- Matched Skills Detection
+- Missing Skills Detection
+- Match Percentage
+- AI Score
+- Recommendation
+- Candidate Evaluation Summary
+
+The tested AI workflow was:
+
+```text
+Job Criteria
+      ↓
+Resume Upload
+      ↓
+Resume Text Extraction
+      ↓
+Backend Processing
+      ↓
+n8n Workflow
+      ↓
+Google Gemini AI
+      ↓
+AI Output Validation
+      ↓
+Candidate Result Aggregation
+      ↓
+Database Processing
+      ↓
+Frontend Result Display
+```
+
+---
+
+## AI Quality Evaluation
+
+At least 10 different resume scenarios were used for AI quality evaluation.
+
+| ID | Input Type | Expected Behavior |
 |---|---|---|
-| Registration | ✅ Completed | Working authentication workflow |
-| Login | ✅ Completed | JWT authentication |
-| Logout | ✅ Completed | Authentication state cleared |
-| Protected Routes | ✅ Completed | Unauthorized access restricted |
-| Profile | ✅ Completed | User profile module available |
-| Dashboard | ✅ Completed | Uses actual system data |
-| Job Criteria CRUD | ✅ Completed | Create, read, update and delete |
-| Multiple Resume Upload | ✅ Completed | PDF/DOCX supported |
-| Resume Text Extraction | ✅ Completed | Backend extraction integrated |
-| Bulk AI Analysis | ✅ Completed | Gemini + n8n |
-| AI Output Validation | ✅ Completed | Structured validation workflow |
-| AI Result Display | ✅ Completed | Frontend result interface |
-| Candidate Ranking | ✅ Completed | AI-based ranking |
-| Shortlist | ✅ Completed | Integrated shortlist workflow |
-| Database Integration | ✅ Completed | MongoDB + Mongoose |
-| Frontend–Backend Integration | ✅ Completed | Major modules connected |
-| Error Handling | ✅ Core Handling Implemented | Formal edge-case testing can continue |
-| Mobile Responsiveness | ✅ Implemented | Final visual review completed |
-| Deployment | ⏳ Pending / Optional | Live deployment if available |
+| AI-01 | Strong Matching CV | High relevance and high score |
+| AI-02 | Partially Matching CV | Medium score; missing skills detected |
+| AI-03 | Unqualified CV | Low score/recommendation |
+| AI-04 | Very Short CV | Graceful analysis with limited evidence |
+| AI-05 | Very Long CV | Complete useful analysis |
+| AI-06 | CV Missing Required Skills | Missing skills identified |
+| AI-07 | Different Profession CV | Low job relevance |
+| AI-08 | Repeated / Similar CV | Reasonably consistent output |
+| AI-09 | Invalid / Poor Text | Handled without application crash |
+| AI-10 | Ambiguous CV | Cautious and meaningful evaluation |
+
+Evaluation factors:
+
+- Relevance
+- Accuracy
+- Consistency
+- Response Quality
+- Response Time
+- Handling of Unexpected Input
+
+AI recommendations are intended to support recruitment decisions and should not replace final human judgment.
+
+---
+
+## AI Error Handling Testing
+
+The AI workflow was reviewed for possible failure scenarios including:
+
+- Empty AI Response
+- Invalid AI Response
+- Invalid JSON
+- Unexpected Response Structure
+- Gemini API Failure
+- Network Failure
+- Request Timeout
+- Failed Candidate Analysis
+- Missing Resume Information
+
+The **Validate AI Output** stage in n8n validates and cleans AI-generated responses before they are returned to the backend.
+
+This helps prevent malformed AI output from breaking the application workflow.
+
+---
+
+## UI/UX Testing
+
+The complete interface was reviewed for usability and consistency.
+
+Testing included:
+
+- Navigation
+- Forms
+- Buttons
+- Menus
+- Notifications
+- Loading States
+- Success Messages
+- Error Messages
+- Empty States
+- Dashboard
+- Resume Upload Interface
+- AI Analysis Interface
+- Candidate Ranking Interface
+- Shortlist Interface
+
+---
+
+## Responsive Testing
+
+The application was reviewed across:
+
+- Desktop
+- Tablet
+- Mobile
+
+Responsive testing covered:
+
+- Navigation
+- Forms
+- Cards
+- Buttons
+- Dashboard
+- Resume Upload
+- AI Analysis Results
+- Candidate Ranking
+- Shortlist
+
+The responsive design ensures that the major application features remain usable across different screen sizes.
+
+---
+
+## Security Testing
+
+Basic security checks were performed.
+
+Verified practices include:
+
+- Password Hashing using bcryptjs
+- JWT Authentication
+- Protected Backend Routes
+- Protected Frontend Routes
+- Environment Variables
+- API Credential Protection
+- Unauthorized Access Prevention
+- Sensitive Data Exclusion from GitHub
+- `.env` excluded using `.gitignore`
+
+Sensitive information must never be committed to GitHub:
+
+```text
+MONGO_URI
+JWT_SECRET
+GEMINI_API_KEY
+N8N_WEBHOOK_URL
+```
+
+---
+
+## Bug Tracking & Debugging
+
+Several development and integration issues were identified and resolved during development and testing.
+
+| Issue | Resolution | Status |
+|---|---|---|
+| PDF resume text extraction failed | Corrected pdf-parse integration and extraction logic | ✅ Fixed |
+| Frontend AI analysis route was not correctly connected | Corrected backend analysis route integration | ✅ Fixed |
+| n8n webhook was not registered during requests | Corrected webhook configuration and production workflow | ✅ Fixed |
+| Gemini responses required structured validation | Added Validate AI Output stage | ✅ Fixed |
+| Multiple candidate responses required aggregation | Added Aggregate Candidate Results stage | ✅ Fixed |
+| AI results were not initially displayed through the complete frontend workflow | Connected frontend, backend, database and AI result flow | ✅ Fixed |
+
+---
+
+## Retesting
+
+After resolving identified bugs, the affected modules were tested again.
+
+Retesting covered:
+
+- Resume Upload
+- Resume Text Extraction
+- Backend API Communication
+- n8n Webhook Communication
+- Gemini AI Processing
+- AI Output Validation
+- Candidate Result Aggregation
+- Database Operations
+- Frontend Result Display
+- Candidate Ranking
+
+The corrected workflows produced the expected results after retesting.
+
+---
+
+## Regression Testing
+
+Previously working features were tested again after major fixes to ensure that changes did not negatively affect other modules.
+
+Regression testing covered:
+
+- Registration
+- Login
+- Logout
+- Protected Routes
+- Profile
+- Dashboard
+- Job Criteria Management
+- Resume Upload
+- Resume Analysis
+- Candidate Ranking
+- Shortlist
+- Database Operations
+
+No major regression issue was identified in the tested core application workflow.
+
+---
+
+## Week 10 Test Summary
+
+| Testing Area | Status |
+|---|---|
+| Functional Testing | ✅ Completed |
+| Authentication Testing | ✅ Completed |
+| Authorization Testing | ✅ Completed |
+| API Testing | ✅ Completed |
+| Database Testing | ✅ Completed |
+| AI Feature Testing | ✅ Completed |
+| AI Quality Evaluation | ✅ Completed |
+| UI/UX Testing | ✅ Completed |
+| Responsive Testing | ✅ Completed |
+| Security Checks | ✅ Completed |
+| Bug Tracking | ✅ Completed |
+| Bug Fixing | ✅ Completed |
+| Retesting | ✅ Completed |
+| Regression Testing | ✅ Completed |
 
 ---
 
@@ -839,9 +1130,15 @@ Logout
 | Shortlist Module | ✅ Completed |
 | Dashboard Analytics | ✅ Completed |
 | Major System Integration | ✅ Completed |
-| Error Handling | ✅ Core Handling Implemented |
-| Responsive UI | ✅ Implemented |
-| Formal Testing & Debugging | 🔜 Next Phase |
+| Functional Testing | ✅ Completed |
+| API Testing | ✅ Completed |
+| Database Testing | ✅ Completed |
+| AI Quality Evaluation | ✅ Completed |
+| Bug Fixing & Debugging | ✅ Completed |
+| Retesting | ✅ Completed |
+| Regression Testing | ✅ Completed |
+| Security Checks | ✅ Completed |
+| Responsive Testing | ✅ Completed |
 | Deployment | ⏳ Pending / Optional |
 
 ---
@@ -851,9 +1148,11 @@ Logout
 - AI evaluation depends on the quality of extracted resume text.
 - Complex PDF/DOCX layouts may affect text extraction.
 - AI-generated evaluations may not always be completely accurate.
+- Gemini AI responses may vary slightly for similar inputs.
 - Gemini API availability and rate limits may affect processing.
 - Internet connectivity is required for AI analysis.
 - AI recommendations should support, not replace, final human recruitment decisions.
+- Live cloud deployment is currently optional/pending.
 
 ---
 
@@ -874,7 +1173,6 @@ Future versions of the system may include:
 - Additional AI Model Support
 - Performance Optimization
 - Cloud Deployment
-- Complete Production Testing
 
 ---
 
@@ -888,6 +1186,7 @@ The project follows basic security practices including:
 - Environment Variables
 - API Key Protection
 - Secure Database Configuration
+- Unauthorized Access Prevention
 
 Sensitive information must **never** be committed to GitHub.
 
@@ -911,21 +1210,24 @@ All team members should contribute regularly to the GitHub repository.
 Use meaningful commit messages such as:
 
 ```text
-Integrated n8n AI workflow
-Integrated Google Gemini API
-Added bulk resume analysis
-Added resume text extraction
-Connected backend with n8n webhook
-Added AI output validation
-Added candidate ranking
-Improved AI response handling
-Updated Week 08 documentation
+Added Week 10 software test cases
+Tested authentication and protected routes
+Added API testing results
+Improved AI error handling
+Tested Gemini resume analysis workflow
+Added AI quality evaluation cases
+Fixed resume text extraction issue
+Resolved n8n webhook integration issue
+Improved responsive interface
+Added regression testing documentation
+Updated Week 10 testing documentation
 ```
 
 Avoid unclear commit messages such as:
 
 ```text
 update
+fix
 done
 final
 completed
@@ -933,58 +1235,32 @@ completed
 
 ---
 
-# Testing
+# Testing & Quality Assurance
 
-The major integrated workflows have been tested, including:
+Formal software testing and quality assurance were completed during Week 10.
 
-- New User Registration
-- Existing User Login
-- Logout
-- Protected Routes
-- Profile Access
-- Job Criteria CRUD
-- Multiple Resume Upload
-- Resume Text Extraction
-- Database Operations
-- Job Selection
-- Backend API Communication
-- n8n Webhook Communication
-- Google Gemini AI Response
-- AI Output Validation
-- Multiple Candidate Processing
-- Result Aggregation
-- Frontend Result Display
-- Candidate Ranking
-- Shortlist Workflow
-- Navigation Between Major Pages
-- Responsive Interface
-- Invalid / Missing Input Handling
-- Core API / AI Failure Handling
+The testing process covered:
 
-Formal testing, debugging, optimization, and additional edge-case verification will continue in the next development phase.
+- Functional Testing
+- Authentication & Authorization Testing
+- REST API Testing
+- Database Testing
+- AI Feature Testing
+- AI Quality Evaluation
+- UI/UX Testing
+- Responsive Testing
+- Basic Security Testing
+- Error Handling
+- Bug Tracking
+- Bug Resolution
+- Retesting
+- Regression Testing
 
----
+The complete recruitment workflow was tested from user authentication through job creation, resume upload, AI analysis, candidate ranking, and shortlisting.
 
-# Mid-Project Review Readiness
+Testing was performed using the actual integrated application rather than isolated dummy modules.
 
-The current system is ready to demonstrate the following integrated features:
-
-- Registration and Login
-- Dashboard
-- Job Criteria Management
-- Multiple Resume Upload
-- Resume Text Extraction
-- Database Operations
-- Frontend–Backend Integration
-- Bulk AI Resume Analysis
-- n8n Workflow
-- Google Gemini AI
-- AI Analysis Results
-- Candidate Ranking
-- Shortlist
-- Logout and Protected Routes
-
-Each team member should be able to explain the module they contributed to and how it integrates with the complete application.
+The major workflows defined in the current project scope are functional after testing and debugging.
 
 ---
 
@@ -1015,8 +1291,12 @@ Northern University of Business and Technology, Khulna
 
 # Project Status
 
-> **Week 09 Completed — Feature Completion, Integration & Mid-Project Review**
+> **Week 10 Completed — Software Testing, Debugging & Quality Assurance**
 
-The major application modules are now integrated into one working software system. The frontend, backend, MongoDB database, authentication, resume processing, n8n workflow, Google Gemini AI, AI output validation, candidate ranking, shortlist, and dashboard workflows are functional.
+The major application modules are now integrated and tested as one working software system.
 
-The next development phase will focus on **formal testing, debugging, optimization, documentation refinement, and optional deployment**.
+The frontend, backend, MongoDB database, authentication, resume processing, n8n workflow, Google Gemini AI, AI output validation, candidate ranking, shortlist, dashboard, and major user workflows are functional and have undergone formal testing.
+
+Week 10 testing included functional testing, authentication and authorization testing, API testing, database testing, AI quality evaluation, UI/UX testing, responsive testing, security checks, bug fixing, retesting, and regression testing.
+
+The next phase will focus on **final refinement, performance optimization, documentation improvement, deployment preparation, and final project presentation**.
